@@ -142,23 +142,39 @@
   .hero {
     min-height: 100vh;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    position: relative; padding: 72px 24px;
+    align-items: center; justify-content: flex-start;
+    position: relative; padding: clamp(26px, 4.5vh, 60px) 24px 96px;
     background: linear-gradient(180deg, var(--paper) 0%, var(--bg) 70%);
     overflow: hidden; text-align: center;
   }
-  .hero-lavender {
-    position: absolute; bottom: -20px; pointer-events: none;
-    width: clamp(150px, 34vw, 270px); opacity: .9;
+  /* foto do casal ao fundo do hero */
+  .hero-photo {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center 72%;
   }
-  .hero-lavender.left  { left: -46px; }
-  .hero-lavender.right { right: -46px; transform: scaleX(-1); opacity: .75; }
+  .hero-veil {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      linear-gradient(180deg,
+        rgba(251,250,252,.93) 0%,
+        rgba(248,246,251,.88) 34%,
+        rgba(244,242,246,.62) 55%,
+        rgba(244,242,246,.18) 72%,
+        rgba(232,228,240,.45) 100%);
+  }
+  .hero-lavender {
+    position: absolute; bottom: -20px; z-index: 1; pointer-events: none;
+    width: clamp(130px, 28vw, 230px); opacity: .82;
+  }
+  .hero-lavender.left  { left: -52px; }
+  .hero-lavender.right { right: -52px; transform: scaleX(-1); opacity: .68; }
 
   .hero-inner { position: relative; z-index: 2; }
 
   .monogram-wrap {
-    position: relative; display: block; margin: 0 auto 28px;
-    width: clamp(190px, 50vw, 250px);
+    position: relative; display: block; margin: 0 auto 18px;
+    width: clamp(158px, 41vw, 216px);
   }
   .monogram { display: block; width: 100%; height: auto; }
   .monogram-sprig {
@@ -169,28 +185,34 @@
   .monogram-letter { font-family: 'Cormorant Garamond', Georgia, serif; fill: var(--purple); }
   .monogram-arc    { font-family: 'Cormorant Garamond', Georgia, serif; fill: var(--lavender); font-size: 14px; letter-spacing: 3.2px; }
 
-  .hero-verse {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(16px, 4.2vw, 19px); font-style: italic;
-    line-height: 1.7; color: var(--text-mid);
-    max-width: 440px; margin: 0 auto 30px;
+  .verse-band {
+    background: var(--paper); border-bottom: 1px solid var(--lilac-soft);
+    padding: 46px 24px; text-align: center;
   }
-  .hero-verse span {
+  .verse-text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(17px, 4.4vw, 21px); font-style: italic;
+    line-height: 1.75; color: var(--text-mid);
+    max-width: 470px; margin: 0 auto;
+  }
+  .verse-ref {
     display: block; font-family: 'Quicksand', sans-serif; font-style: normal;
     font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
-    color: var(--purple); margin-top: 12px;
+    color: var(--purple); margin-top: 14px;
   }
 
   .hero-eyebrow {
     display: block; font-size: 11px; letter-spacing: .32em;
-    text-transform: uppercase; font-weight: 500; color: var(--text-light);
+    text-transform: uppercase; font-weight: 500; color: var(--text-mid);
+    text-shadow: 0 1px 12px rgba(251,250,252,.9);
   }
 
   .names {
     font-family: 'Allura', cursive;
-    font-size: clamp(54px, 16vw, 92px);
-    line-height: .95; color: var(--lavender);
-    margin: 18px 0 6px;
+    font-size: clamp(48px, 13.5vw, 84px);
+    line-height: .92; color: var(--lavender);
+    margin: 12px 0 4px;
+    text-shadow: 0 1px 14px rgba(251,250,252,.9);
   }
   .names .amp {
     display: block; font-family: 'Quicksand', sans-serif;
@@ -200,7 +222,7 @@
 
   .divider-ornament {
     display: flex; align-items: center; justify-content: center;
-    gap: 10px; margin: 22px auto 0; max-width: 240px;
+    gap: 10px; margin: 16px auto 0; max-width: 240px;
   }
   .divider-ornament::before, .divider-ornament::after {
     content: ''; flex: 1; height: 1px;
@@ -213,11 +235,13 @@
 
   .hero-date {
     font-size: clamp(15px, 4.4vw, 19px); letter-spacing: .34em;
-    font-weight: 400; color: var(--purple); margin-top: 20px;
+    font-weight: 400; color: var(--purple); margin-top: 15px;
+    text-shadow: 0 1px 12px rgba(251,250,252,.9);
   }
   .hero-weekday {
     font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
-    color: var(--text-light); margin-top: 10px;
+    color: var(--text-mid); margin-top: 8px;
+    text-shadow: 0 1px 12px rgba(251,250,252,.9);
   }
 
   .scroll-hint {
@@ -230,27 +254,6 @@
   .scroll-arrow {
     width: 1px; height: 26px;
     background: linear-gradient(180deg, var(--lilac), transparent);
-  }
-
-  /* ---------- FOTO ---------- */
-  .photo-section { position: relative; width: 100%; overflow: hidden; background: var(--bg-soft); }
-  .photo-section img { display: block; width: 100%; max-height: 78vh; object-fit: cover; object-position: center 35%; }
-  .photo-overlay {
-    position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(180deg, rgba(244,242,246,.55) 0%, rgba(244,242,246,0) 28%, rgba(55,50,74,.30) 100%);
-  }
-  .photo-caption {
-    position: absolute; left: 0; right: 0; bottom: 22px; text-align: center;
-    font-family: 'Allura', cursive; font-size: clamp(34px, 9vw, 46px);
-    color: #fff; text-shadow: 0 2px 18px rgba(55,50,74,.55);
-  }
-  .photo-fallback {
-    display: none; padding: 56px 24px; text-align: center; background: var(--bg-soft);
-  }
-  .photo-fallback .footer-sprig { width: 120px; opacity: .75; margin: 0 auto 14px; }
-  .photo-fallback span {
-    display: block; font-size: 11px; letter-spacing: .3em;
-    text-transform: uppercase; color: var(--text-light);
   }
 
   /* ---------- MÚSICA ---------- */
@@ -411,6 +414,7 @@
   }
   .pix-copy:hover { background: var(--purple-deep); }
   .gift-note { display: block; font-size: 11px; color: var(--text-light); margin-top: 16px; line-height: 1.7; }
+  .gift-box .btn-primary { margin-top: 4px; }
 
   /* ---------- RSVP ---------- */
   .rsvp-section { text-align: center; padding-bottom: 72px; }
@@ -421,6 +425,7 @@
     letter-spacing: .24em; text-transform: uppercase; cursor: pointer;
     padding: 14px 34px; border-radius: 999px; min-width: 240px;
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    text-decoration: none; border: none;
     transition: background .25s ease, color .25s ease, transform .2s ease;
   }
   .btn-primary {
@@ -445,48 +450,53 @@
   }
 
   /* ---------- MODAIS ---------- */
-  .modal-overlay, .music-modal-overlay {
+  .music-modal-overlay {
     position: fixed; inset: 0; z-index: 1100;
     background: rgba(55,50,74,.55); backdrop-filter: blur(3px);
     display: none; align-items: center; justify-content: center; padding: 22px;
   }
-  .modal-overlay.open, .music-modal-overlay.open { display: flex; }
-  .modal, .music-modal {
+  .music-modal-overlay.open { display: flex; }
+  .music-modal {
     background: var(--paper); border-radius: 6px; padding: 32px 24px;
-    width: 100%; max-width: 400px; position: relative; text-align: left;
+    width: 100%; max-width: 400px; position: relative; text-align: center;
     max-height: 90vh; overflow-y: auto;
     box-shadow: 0 22px 60px rgba(55,50,74,.25);
     animation: splashFadeUp .4s both;
   }
-  .music-modal { text-align: center; }
-  .modal h3, .music-modal h3 {
+  .music-modal h3 {
     font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500;
     font-size: 24px; color: var(--purple); margin-bottom: 6px; text-align: center;
   }
-  .modal > div > p, .music-modal p {
+  .music-modal p {
     font-size: 13px; color: var(--text-light); text-align: center; margin-bottom: 20px;
   }
-  .modal-close, .music-modal-close {
+  .music-modal-close {
     position: absolute; top: 12px; right: 14px;
     background: none; border: none; font-size: 16px;
     color: var(--text-light); cursor: pointer; line-height: 1;
   }
-  .field-group { margin-bottom: 14px; }
-  .field-group label {
-    display: block; font-size: 10px; letter-spacing: .22em;
-    text-transform: uppercase; color: var(--text-light); margin-bottom: 6px;
-  }
-  .field-group input, .field-group select {
-    width: 100%; padding: 11px 13px; border-radius: 4px;
-    border: 1px solid var(--lilac-soft); background: #fff;
-    font-family: 'Quicksand', sans-serif; font-size: 14px; color: var(--text);
-  }
-  .field-group input:focus, .field-group select:focus {
-    outline: none; border-color: var(--purple);
-  }
-  .rsvp-success { display: none; text-align: center; }
-  .rsvp-success h3 { margin-top: 12px; }
   .music-modal iframe { border: none; border-radius: 4px; }
+
+  /* Em telas largas o hero vira duas colunas: texto + foto em arco */
+  @media (min-width: 880px) {
+    .hero {
+      flex-direction: row; align-items: center; justify-content: center;
+      gap: clamp(40px, 6vw, 80px); padding: 72px 56px 80px;
+    }
+    .hero-photo {
+      position: relative; inset: auto; order: 2; flex: none;
+      width: clamp(300px, 32vw, 400px);
+      height: min(74vh, 600px);
+      border-radius: 200px 200px 10px 10px;
+      object-position: center 62%;
+      box-shadow: 0 18px 50px rgba(95,75,155,.18);
+    }
+    .hero-veil { display: none; }
+    .hero-inner { order: 1; max-width: 500px; }
+    .hero-lavender { width: clamp(140px, 15vw, 200px); opacity: .7; }
+    .hero-lavender.left  { left: -60px; }
+    .hero-lavender.right { right: -60px; }
+  }
 
   @media (max-width: 420px) {
     section { padding: 52px 20px; }
@@ -516,6 +526,8 @@
 
   <!-- HERO -->
   <div class="hero">
+    <img class="hero-photo" src="assets/casal.jpg" alt="Geovanda e André na praia" onerror="this.remove()">
+    <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-lavender art-lavanda left"  aria-hidden="true"></div>
     <div class="hero-lavender art-lavanda right" aria-hidden="true"></div>
 
@@ -541,11 +553,6 @@
         </svg>
       </div>
 
-      <p class="hero-verse">
-        “Pois onde quer que tu fores irei eu, e onde quer que pousares, ali pousarei eu.”
-        <span>Rute 1:16</span>
-      </p>
-
       <span class="hero-eyebrow">Convidam para o seu casamento</span>
 
       <div class="names">
@@ -566,15 +573,12 @@
     </div>
   </div>
 
-  <!-- FOTO DO CASAL -->
-  <div class="photo-section" id="photo-section">
-    <img src="assets/casal.jpg" alt="Geovanda e André" loading="lazy" onerror="showPhotoFallback()"/>
-    <div class="photo-overlay"></div>
-    <div class="photo-caption">Geovanda &amp; André</div>
-  </div>
-  <div class="photo-fallback" id="photo-fallback">
-    <div class="footer-sprig art-ramo" aria-hidden="true"></div>
-    <span>Geovanda &amp; André</span>
+  <!-- VERSÍCULO -->
+  <div class="verse-band">
+    <p class="verse-text">
+      “Pois onde quer que tu fores irei eu, e onde quer que pousares, ali pousarei eu.”
+      <span class="verse-ref">Rute 1:16</span>
+    </p>
   </div>
 
   <!-- MÚSICA -->
@@ -584,7 +588,7 @@
       <button class="play-btn" onclick="openMusic()" aria-label="Tocar nossa música">
         <svg width="13" height="15" viewBox="0 0 14 16" fill="white" aria-hidden="true"><path d="M0 0 L14 8 L0 16 Z"/></svg>
       </button>
-      <span class="music-title">Perfect — Ed Sheeran</span>
+      <span class="music-title">Toque para ouvir</span>
     </div>
   </div>
 
@@ -737,9 +741,11 @@
       </svg>
       <p class="gift-text">
         A sua presença já é o nosso maior presente.<br>
-        Mas, caso queiram nos presentear, receberemos com carinho através do Pix.
+        Mas, caso queiram nos presentear, a nossa lista está no site abaixo —
+        e, se preferir, também recebemos com carinho pelo Pix.
       </p>
-      <div class="pix-box">
+      <a class="btn-primary" href="https://noivos.casar.com/geovanda-e-andre" target="_blank" rel="noopener">Ver lista de presentes</a>
+      <div class="pix-box" style="margin-top:22px">
         <span class="pix-label">Chave Pix</span>
         <span class="pix-key" id="pix-key">07889386303</span>
         <button class="pix-copy" onclick="copyPix()" id="pix-btn">Copiar chave</button>
@@ -748,15 +754,15 @@
     </div>
   </section>
 
-  <!-- RSVP -->
+  <!-- CONFIRMAÇÃO -->
   <section class="rsvp-section">
-    <span class="section-label reveal">Confirmação</span>
+    <span class="section-label reveal">Confirmação de presença</span>
     <p class="rsvp-intro reveal">
       A sua presença é muito importante para nós.<br>
-      Por favor, confirme até <strong>08 de outubro de 2026</strong>.
+      A confirmação é feita no nosso site de casamento.
     </p>
     <div class="rsvp-buttons reveal">
-      <button class="btn-primary" onclick="openModal()">✓ Confirmar presença</button>
+      <a class="btn-primary" href="https://noivos.casar.com/geovanda-e-andre" target="_blank" rel="noopener">✓ Confirmar presença</a>
       <a class="btn-secondary" href="https://www.google.com/maps/search/?api=1&query=Garden+Buffet+Maraponga+Rua+Benjamim+Brasil+570+Fortaleza+CE" target="_blank" rel="noopener">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
         Ver localização
@@ -771,52 +777,13 @@
   </footer>
 </div>
 
-<!-- MODAL RSVP -->
-<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()" aria-label="Fechar">✕</button>
-    <div id="rsvp-form-content">
-      <h3>Confirmar presença</h3>
-      <p>Mal podemos esperar para celebrar com você!</p>
-      <div class="field-group">
-        <label for="guest-name">Seu nome</label>
-        <input type="text" id="guest-name" placeholder="Nome completo">
-      </div>
-      <div class="field-group">
-        <label for="guest-count">Quantas pessoas?</label>
-        <select id="guest-count">
-          <option value="1">Apenas eu</option>
-          <option value="2">Eu + 1 acompanhante</option>
-          <option value="3">Família (3 pessoas)</option>
-          <option value="4">Família (4 pessoas)</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label for="food-restriction">Restrição alimentar?</label>
-        <input type="text" id="food-restriction" placeholder="Nenhuma / Vegetariano / etc">
-      </div>
-      <div style="margin-top: 22px;">
-        <button class="btn-primary" style="width:100%" onclick="submitRSVP()">Confirmar ✓</button>
-      </div>
-    </div>
-    <div class="rsvp-success" id="rsvp-success">
-      <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#5f4b9b" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:0 auto" aria-hidden="true">
-        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-        <polyline points="22,6 12,13 2,6"/>
-      </svg>
-      <h3>Confirmado!</h3>
-      <p>Obrigada pela confirmação.<br>Nos vemos em 08 de novembro!</p>
-    </div>
-  </div>
-</div>
-
 <!-- MODAL MÚSICA -->
 <div class="music-modal-overlay" id="music-modal" onclick="closeMusicOutside(event)">
   <div class="music-modal">
     <button class="music-modal-close" onclick="closeMusic()" aria-label="Fechar">✕</button>
     <h3>Nossa Música</h3>
-    <p>Perfect — Ed Sheeran</p>
-    <iframe id="yt-player" width="100%" height="200" src="" title="Perfect — Ed Sheeran" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <p>A música do nosso casamento</p>
+    <iframe id="yt-player" width="100%" height="200" src="" title="Nossa música" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 </div>
 
@@ -869,23 +836,6 @@
       .forEach(el => observer.observe(el));
   }
 
-  /* Se a foto do casal ainda não foi adicionada em assets/casal.jpg */
-  function showPhotoFallback() {
-    document.getElementById('photo-section').style.display = 'none';
-    document.getElementById('photo-fallback').style.display = 'block';
-  }
-
-  function openModal()  { document.getElementById('modal').classList.add('open'); }
-  function closeModal() { document.getElementById('modal').classList.remove('open'); }
-  function closeModalOutside(e) { if (e.target === document.getElementById('modal')) closeModal(); }
-
-  function submitRSVP() {
-    const name = document.getElementById('guest-name').value.trim();
-    if (!name) { document.getElementById('guest-name').focus(); return; }
-    document.getElementById('rsvp-form-content').style.display = 'none';
-    document.getElementById('rsvp-success').style.display = 'block';
-  }
-
   function copyPix() {
     const key = document.getElementById('pix-key').textContent.trim();
     const btn = document.getElementById('pix-btn');
@@ -903,7 +853,7 @@
   }
 
   function openMusic() {
-    document.getElementById('yt-player').src = 'https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1';
+    document.getElementById('yt-player').src = 'https://www.youtube.com/embed/cZag0E32is0?autoplay=1';
     document.getElementById('music-modal').classList.add('open');
   }
   function closeMusic() {

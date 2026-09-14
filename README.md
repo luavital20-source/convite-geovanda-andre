@@ -20,28 +20,32 @@ e o monograma **G/A**.
   enviar o link depois de hospedar).
 - `assets/lavanda.webp`, `assets/ramo.webp` — artes extraídas do convite físico
   (versões `.png` também incluídas, caso queira reutilizar em outro material).
-- `assets/casal.jpg` — **você precisa adicionar**: a foto do casal.
+- `assets/casal.jpg` — **você precisa adicionar**: a foto do casal na praia.
 
 ## Adicionar a foto do casal
 
-Salve a foto (aquela da praia, por exemplo) como `assets/casal.jpg`, ao lado do
-`index.html`. Enquanto o arquivo não existir, o convite mostra automaticamente
-um ornamento no lugar da foto — nada quebra.
+Salve a foto como `assets/casal.jpg`, ao lado do `index.html`. Ela entra no
+hero (a primeira tela): no celular, como fundo atrás do monograma e dos nomes;
+no computador, como uma foto em arco ao lado do texto. Enquanto o arquivo não
+existir, o hero continua funcionando com o fundo claro — nada quebra.
 
 Se preferir deixar tudo em um arquivo só, dá para embutir a foto em base64 no
 lugar de `src="assets/casal.jpg"`.
 
-## O que ajustar antes de enviar aos convidados
+## Links usados
 
-1. **Nossa música** — está com *Perfect — Ed Sheeran* (padrão do modelo).
-   Troque o título e o link do YouTube em `openMusic()` pela música de vocês.
-2. **Prazo do RSVP** — está *08 de outubro de 2026* (um mês antes). Ajuste na
-   seção "Confirmação".
-3. **Confirmação de presença** — hoje o formulário só exibe a mensagem de
-   sucesso na tela; ele não envia os dados para lugar nenhum. Para receber as
-   confirmações, ligue o `submitRSVP()` a um Google Forms, a uma planilha ou a
-   um link de WhatsApp dos noivos.
-4. **Horário** — o convite impresso traz 16:00; aqui está **16:30**, conforme
+- **Lista de presentes e confirmação de presença:**
+  <https://noivos.casar.com/geovanda-e-andre>
+- **Nossa música:** <https://www.youtube.com/watch?v=cZag0E32is0>
+  (o player abre dentro do convite)
+- **Mapa:** busca do Google Maps pelo Garden Buffet Maraponga
+
+## O que ainda dá para ajustar
+
+1. **Nome da música** — o player está com o vídeo certo, mas sem o título
+   escrito na tela (aparece "Toque para ouvir"). Se quiser mostrar o nome da
+   música e do artista, é só trocar esse texto.
+2. **Horário** — o convite impresso traz 16:00; aqui está **16:30**, conforme
    combinado. Se o certo for 16:00, troque nos três lugares: cronograma,
    card "Horário" e a data-alvo da contagem regressiva no `startCountdown()`.
 
