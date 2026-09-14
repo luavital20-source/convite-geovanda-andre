@@ -20,17 +20,15 @@ e o monograma **G/A**.
   enviar o link depois de hospedar).
 - `assets/lavanda.webp`, `assets/ramo.webp` — artes extraídas do convite físico
   (versões `.png` também incluídas, caso queira reutilizar em outro material).
-- `assets/casal.jpg` — **você precisa adicionar**: a foto do casal na praia.
+- `assets/casal.jpg` — a foto do casal na praia.
 
-## Adicionar a foto do casal
+## A foto do casal
 
-Salve a foto como `assets/casal.jpg`, ao lado do `index.html`. Ela entra no
-hero (a primeira tela): no celular, como fundo atrás do monograma e dos nomes;
-no computador, como uma foto em arco ao lado do texto. Enquanto o arquivo não
-existir, o hero continua funcionando com o fundo claro — nada quebra.
-
-Se preferir deixar tudo em um arquivo só, dá para embutir a foto em base64 no
-lugar de `src="assets/casal.jpg"`.
+A foto aparece no hero (a primeira tela): no celular, como fundo atrás do
+monograma e dos nomes, com um véu claro por cima; no computador, recortada em
+arco ao lado do texto. Para trocar a foto, basta substituir o arquivo
+`assets/casal.jpg` mantendo o nome — se ele faltar, o hero continua
+funcionando com o fundo claro, sem imagem quebrada.
 
 ## Links usados
 
