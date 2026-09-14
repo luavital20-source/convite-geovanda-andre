@@ -24,11 +24,11 @@ e o monograma **G/A**.
 
 ## A foto do casal
 
-A foto é a primeira tela do convite: ocupa a altura toda, com "Geovanda e
-André" na letra manuscrita na parte de baixo e um sombreado suave para o nome
-ficar legível. Não há tela de abertura na frente dela — quem abre o link já vê
-a foto. Logo abaixo vem a faixa com a data, e o monograma G/A fecha o convite
-no rodapé.
+O convite abre com uma tela de boas-vindas ("um convite especial — Geovanda e
+André — toque para abrir", com pétalas caindo). Ao tocar, ela some e revela a
+foto do casal ocupando a tela inteira, com "Geovanda e André" na letra
+manuscrita embaixo. Logo depois vem a faixa com a data, e o monograma G/A
+fecha o convite no rodapé.
 
 Para trocar a foto, basta substituir o arquivo `assets/casal.jpg` mantendo o
 nome. Se a foto nova tiver outro enquadramento, ajuste o `object-position` de
@@ -44,10 +44,10 @@ nome. Se a foto nova tiver outro enquadramento, ajuste o `object-position` de
 
 ## Sobre a música tocar sozinha
 
-A música começa assim que o convite abre. Os navegadores (principalmente no
-celular) costumam bloquear som automático, então o convite faz o seguinte: se
-o som for bloqueado, a música começa no mudo e liga sozinha no primeiro toque
-do convidado em qualquer lugar da tela. O botão em "Nossa Música" mostra o
+A música começa no toque em "toque para abrir", junto com a abertura do
+convite. Isso resolve o bloqueio de som automático dos navegadores: o player
+já carrega no mudo enquanto a tela de boas-vindas está na frente, e esse
+primeiro toque é o gesto que libera o som. O botão em "Nossa Música" mostra o
 estado e permite pausar.
 
 ## O que ainda dá para ajustar

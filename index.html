@@ -50,6 +50,55 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* ---------- SPLASH ---------- */
+  #splash {
+    position: fixed; inset: 0; z-index: 1000;
+    background: radial-gradient(circle at 50% 35%, #fbfafc 0%, var(--bg-soft) 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer; text-align: center; padding: 24px;
+    transition: opacity .8s ease;
+  }
+  #splash.hide { opacity: 0; pointer-events: none; }
+
+  .splash-sub {
+    font-size: 11px; letter-spacing: .4em; text-transform: uppercase;
+    font-weight: 500; color: var(--text-light);
+    margin-bottom: 18px;
+    animation: splashFadeUp .8s .3s both;
+  }
+  .splash-name {
+    font-family: 'Allura', cursive;
+    font-size: clamp(56px, 17vw, 96px);
+    font-weight: 400; line-height: 1.05;
+    color: var(--lavender);
+    animation: splashFadeUp .8s .6s both;
+  }
+  .splash-date {
+    font-size: 13px; letter-spacing: .5em; font-weight: 400;
+    color: var(--purple);
+    margin-top: 14px;
+    animation: splashFadeUp .8s .85s both;
+  }
+  .splash-line {
+    width: 130px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--lilac), transparent);
+    margin: 22px auto 0;
+    animation: splashFadeUp .8s 1s both;
+  }
+  .splash-hint {
+    position: absolute; bottom: 42px;
+    font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--text-light);
+    animation: splashPulse 2s 1.8s infinite;
+  }
+  .splash-sprig {
+    position: absolute; bottom: -10px; width: 120px; opacity: .55;
+    animation: splashFadeUp 1.2s 1.1s both;
+  }
+  .splash-sprig.left  { left: -18px; transform: rotate(14deg); }
+  .splash-sprig.right { right: -18px; transform: rotate(-14deg) scaleX(-1); }
+
   @keyframes splashFadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: none; }
@@ -115,7 +164,6 @@
         rgba(55,50,74,.55) 90%,
         rgba(55,50,74,.70) 100%);
   }
-  #petals { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 
   .hero-names {
     position: relative; z-index: 3;
@@ -456,15 +504,25 @@
 </head>
 <body>
 
+<!-- ============ ABERTURA ============ -->
+<div id="splash">
+  <div id="petals" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+  <div class="splash-sprig art-ramo left"  aria-hidden="true"></div>
+  <div class="splash-sprig art-ramo right" aria-hidden="true"></div>
+  <p class="splash-sub">Um convite especial</p>
+  <h1 class="splash-name">Geovanda<br>e André</h1>
+  <p class="splash-date">08 · 11 · 2026</p>
+  <div class="splash-line"></div>
+  <p class="splash-hint">toque para abrir</p>
+</div>
+
 <!-- ============ CONVITE ============ -->
-<div id="invite" class="visible">
+<div id="invite">
 
   <!-- HERO: foto do casal -->
   <div class="hero">
     <img class="hero-photo" src="assets/casal.jpg" alt="Geovanda e André na praia">
     <div class="hero-shade" aria-hidden="true"></div>
-    <div id="petals" aria-hidden="true"></div>
-
     <h1 class="hero-names">
       Geovanda
       <span class="amp">e</span>
@@ -727,8 +785,16 @@
     }
   })();
 
-  initScrollAnimations();
-  startCountdown();
+  document.getElementById('splash').addEventListener('click', function () {
+    this.classList.add('hide');
+    startMusic();
+    setTimeout(() => {
+      this.style.display = 'none';
+      document.getElementById('invite').classList.add('visible');
+      initScrollAnimations();
+      startCountdown();
+    }, 800);
+  });
 
   function startCountdown() {
     const target = new Date('2026-11-08T16:30:00');
@@ -770,7 +836,7 @@
 
   /* ---- Nossa música: começa sozinha ao abrir o convite ---- */
   var MUSIC_ID = 'cZag0E32is0';
-  var ytPlayer = null, musicPlaying = false;
+  var ytPlayer = null, musicPlaying = false, splashJaAberto = false;
 
   (function loadYT() {
     var tag = document.createElement('script');
@@ -784,8 +850,8 @@
       playerVars: { autoplay: 1, playsinline: 1, controls: 0, rel: 0, loop: 1, playlist: MUSIC_ID },
       events: {
         onReady: function (e) {
-          try { e.target.unMute(); e.target.setVolume(70); e.target.playVideo(); } catch (err) {}
-          setTimeout(checkAutoplay, 1500);
+          try { e.target.mute(); e.target.playVideo(); } catch (err) {}
+          if (splashJaAberto) startMusic();
         },
         onStateChange: function (e) {
           musicPlaying = (e.data === YT.PlayerState.PLAYING);
@@ -795,17 +861,13 @@
     });
   }
 
-  /* Navegador bloqueou o som? Toca no mudo e liga o som no primeiro toque. */
-  function checkAutoplay() {
-    if (musicPlaying && !ytPlayer.isMuted()) return;
-    try { ytPlayer.mute(); ytPlayer.playVideo(); } catch (err) {}
-    var events = ['pointerdown', 'touchend', 'click', 'keydown'];
-    function turnOn() {
-      try { ytPlayer.unMute(); ytPlayer.setVolume(70); ytPlayer.playVideo(); } catch (err) {}
-      events.forEach(function (ev) { document.removeEventListener(ev, turnOn); });
-      setTimeout(updateMusicUI, 300);
-    }
-    events.forEach(function (ev) { document.addEventListener(ev, turnOn, { passive: true }); });
+  /* O toque em "toque para abrir" libera o som; se o player ainda não
+     estiver pronto, ele começa assim que carregar. */
+  function startMusic() {
+    splashJaAberto = true;
+    if (!ytPlayer) return;
+    try { ytPlayer.unMute(); ytPlayer.setVolume(70); ytPlayer.playVideo(); } catch (err) {}
+    setTimeout(updateMusicUI, 400);
   }
 
   function toggleMusic() {
