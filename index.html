@@ -142,26 +142,10 @@
   .hero {
     min-height: 100vh;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-start;
-    position: relative; padding: clamp(26px, 4.5vh, 60px) 24px 96px;
+    align-items: center; justify-content: center;
+    position: relative; padding: clamp(56px, 9vh, 96px) 24px 92px;
     background: linear-gradient(180deg, var(--paper) 0%, var(--bg) 70%);
     overflow: hidden; text-align: center;
-  }
-  /* foto do casal ao fundo do hero */
-  .hero-photo {
-    position: absolute; inset: 0; z-index: 0;
-    width: 100%; height: 100%;
-    object-fit: cover; object-position: center 72%;
-  }
-  .hero-veil {
-    position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background:
-      linear-gradient(180deg,
-        rgba(251,250,252,.93) 0%,
-        rgba(248,246,251,.88) 34%,
-        rgba(244,242,246,.62) 55%,
-        rgba(244,242,246,.18) 72%,
-        rgba(232,228,240,.45) 100%);
   }
   .hero-lavender {
     position: absolute; bottom: -20px; z-index: 1; pointer-events: none;
@@ -203,8 +187,7 @@
 
   .hero-eyebrow {
     display: block; font-size: 11px; letter-spacing: .32em;
-    text-transform: uppercase; font-weight: 500; color: var(--text-mid);
-    text-shadow: 0 1px 12px rgba(251,250,252,.9);
+    text-transform: uppercase; font-weight: 500; color: var(--text-light);
   }
 
   .names {
@@ -212,7 +195,6 @@
     font-size: clamp(48px, 13.5vw, 84px);
     line-height: .92; color: var(--lavender);
     margin: 12px 0 4px;
-    text-shadow: 0 1px 14px rgba(251,250,252,.9);
   }
   .names .amp {
     display: block; font-family: 'Quicksand', sans-serif;
@@ -236,12 +218,10 @@
   .hero-date {
     font-size: clamp(15px, 4.4vw, 19px); letter-spacing: .34em;
     font-weight: 400; color: var(--purple); margin-top: 15px;
-    text-shadow: 0 1px 12px rgba(251,250,252,.9);
   }
   .hero-weekday {
     font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
-    color: var(--text-mid); margin-top: 8px;
-    text-shadow: 0 1px 12px rgba(251,250,252,.9);
+    color: var(--text-light); margin-top: 8px;
   }
 
   .scroll-hint {
@@ -254,6 +234,27 @@
   .scroll-arrow {
     width: 1px; height: 26px;
     background: linear-gradient(180deg, var(--lilac), transparent);
+  }
+
+  /* ---------- FOTO DO CASAL ---------- */
+  .photo-section {
+    position: relative; width: 100%; overflow: hidden; padding: 0;
+    background: var(--bg-soft);
+  }
+  .photo-section img {
+    display: block; width: 100%;
+    height: 100vw; min-height: 320px; max-height: 620px;
+    object-fit: cover; object-position: center 72%;
+  }
+  @media (min-width: 600px) { .photo-section img { height: 580px; } }
+  .photo-overlay {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(244,242,246,.20) 0%, transparent 34%, rgba(55,50,74,.42) 100%);
+  }
+  .photo-caption {
+    position: absolute; bottom: 26px; left: 0; right: 0; text-align: center;
+    font-family: 'Allura', cursive; font-size: clamp(34px, 8vw, 46px);
+    color: #fff; text-shadow: 0 2px 16px rgba(55,50,74,.55);
   }
 
   /* ---------- MÚSICA ---------- */
@@ -477,27 +478,6 @@
   }
   .music-modal iframe { border: none; border-radius: 4px; }
 
-  /* Em telas largas o hero vira duas colunas: texto + foto em arco */
-  @media (min-width: 880px) {
-    .hero {
-      flex-direction: row; align-items: center; justify-content: center;
-      gap: clamp(40px, 6vw, 80px); padding: 72px 56px 80px;
-    }
-    .hero-photo {
-      position: relative; inset: auto; order: 2; flex: none;
-      width: clamp(320px, 34vw, 430px);
-      height: min(72vh, 580px);
-      border-radius: 215px 215px 10px 10px;
-      object-position: center 72%;
-      box-shadow: 0 18px 50px rgba(95,75,155,.18);
-    }
-    .hero-veil { display: none; }
-    .hero-inner { order: 1; max-width: 500px; }
-    .hero-lavender { width: clamp(140px, 15vw, 200px); opacity: .7; }
-    .hero-lavender.left  { left: -60px; }
-    .hero-lavender.right { right: -60px; }
-  }
-
   @media (max-width: 420px) {
     section { padding: 52px 20px; }
     .info-grid { grid-template-columns: 1fr; }
@@ -526,8 +506,6 @@
 
   <!-- HERO -->
   <div class="hero">
-    <img class="hero-photo" src="assets/casal.jpg" alt="Geovanda e André na praia" onerror="this.remove()">
-    <div class="hero-veil" aria-hidden="true"></div>
     <div class="hero-lavender art-lavanda left"  aria-hidden="true"></div>
     <div class="hero-lavender art-lavanda right" aria-hidden="true"></div>
 
@@ -571,6 +549,13 @@
       <span>Rolar</span>
       <div class="scroll-arrow"></div>
     </div>
+  </div>
+
+  <!-- FOTO DO CASAL -->
+  <div class="photo-section" id="photo-section">
+    <img src="assets/casal.jpg" alt="Geovanda e André na praia" onerror="document.getElementById('photo-section').remove()">
+    <div class="photo-overlay" aria-hidden="true"></div>
+    <div class="photo-caption">Geovanda &amp; André</div>
   </div>
 
   <!-- VERSÍCULO -->

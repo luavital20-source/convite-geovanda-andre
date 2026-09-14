@@ -24,11 +24,15 @@ e o monograma **G/A**.
 
 ## A foto do casal
 
-A foto aparece no hero (a primeira tela): no celular, como fundo atrás do
-monograma e dos nomes, com um véu claro por cima; no computador, recortada em
-arco ao lado do texto. Para trocar a foto, basta substituir o arquivo
-`assets/casal.jpg` mantendo o nome — se ele faltar, o hero continua
-funcionando com o fundo claro, sem imagem quebrada.
+A foto aparece em faixa de largura inteira logo abaixo do monograma e dos
+nomes, centralizada, com um sombreado suave embaixo e "Geovanda & André" por
+cima — o mesmo modelo do convite usado como referência. O enquadramento está
+ajustado para o casal aparecer inteiro tanto no celular quanto no computador.
+
+Para trocar a foto, basta substituir o arquivo `assets/casal.jpg` mantendo o
+nome. Se a foto nova tiver outro enquadramento, ajuste o `object-position` de
+`.photo-section img` (hoje `center 72%`). Se o arquivo faltar, a faixa some
+sozinha, sem imagem quebrada.
 
 ## Links usados
 
