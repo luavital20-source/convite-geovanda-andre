@@ -24,15 +24,15 @@ e o monograma **G/A**.
 
 ## A foto do casal
 
-A foto aparece em faixa de largura inteira logo abaixo do monograma e dos
-nomes, centralizada, com um sombreado suave embaixo e "Geovanda & André" por
-cima — o mesmo modelo do convite usado como referência. O enquadramento está
-ajustado para o casal aparecer inteiro tanto no celular quanto no computador.
+A foto é a primeira tela do convite: ocupa a altura toda, com "Geovanda e
+André" na letra manuscrita na parte de baixo e um sombreado suave para o nome
+ficar legível. Não há tela de abertura na frente dela — quem abre o link já vê
+a foto. Logo abaixo vem a faixa com a data, e o monograma G/A fecha o convite
+no rodapé.
 
 Para trocar a foto, basta substituir o arquivo `assets/casal.jpg` mantendo o
 nome. Se a foto nova tiver outro enquadramento, ajuste o `object-position` de
-`.photo-section img` (hoje `center 72%`). Se o arquivo faltar, a faixa some
-sozinha, sem imagem quebrada.
+`.hero-photo` (hoje `center 72%`).
 
 ## Links usados
 
