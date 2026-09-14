@@ -39,14 +39,22 @@ nome. Se a foto nova tiver outro enquadramento, ajuste o `object-position` de
 - **Lista de presentes e confirmação de presença:**
   <https://noivos.casar.com/geovanda-e-andre>
 - **Nossa música:** <https://www.youtube.com/watch?v=cZag0E32is0>
-  (o player abre dentro do convite)
+  (começa a tocar sozinha ao abrir o convite)
 - **Mapa:** busca do Google Maps pelo Garden Buffet Maraponga
+
+## Sobre a música tocar sozinha
+
+A música começa assim que o convite abre. Os navegadores (principalmente no
+celular) costumam bloquear som automático, então o convite faz o seguinte: se
+o som for bloqueado, a música começa no mudo e liga sozinha no primeiro toque
+do convidado em qualquer lugar da tela. O botão em "Nossa Música" mostra o
+estado e permite pausar.
 
 ## O que ainda dá para ajustar
 
 1. **Nome da música** — o player está com o vídeo certo, mas sem o título
-   escrito na tela (aparece "Toque para ouvir"). Se quiser mostrar o nome da
-   música e do artista, é só trocar esse texto.
+   escrito na tela (aparece "Toque para ouvir" / "Tocando agora"). Se quiser
+   mostrar o nome da música e do artista, é só trocar esse texto.
 2. **Horário** — o convite impresso traz 16:00; aqui está **16:30**, conforme
    combinado. Se o certo for 16:00, troque nos três lugares: cronograma,
    card "Horário" e a data-alvo da contagem regressiva no `startCountdown()`.

@@ -241,6 +241,10 @@
   }
   .play-btn:hover { transform: scale(1.07); background: var(--purple-deep); }
   .music-title { font-size: 13px; color: var(--text-mid); letter-spacing: .04em; }
+  #bg-player {
+    position: fixed; left: -9999px; bottom: 0;
+    width: 1px; height: 1px; opacity: 0; pointer-events: none;
+  }
 
   /* ---------- MENSAGEM ---------- */
   .message-box {
@@ -329,12 +333,10 @@
   }
   .dress-item-desc { display: block; font-size: 13px; line-height: 1.6; color: var(--text-light); }
   .dress-note {
-    display: block; margin-top: 26px; padding-top: 20px;
+    display: block; margin-top: 24px; padding-top: 20px;
     border-top: 1px solid var(--lilac-soft);
     font-size: 12px; line-height: 1.8; color: var(--text-light);
   }
-  .palette { display: flex; justify-content: center; gap: 10px; margin: 16px 0 4px; }
-  .swatch { width: 24px; height: 24px; border-radius: 50%; border: 1px solid rgba(55,50,74,.10); }
 
   /* ---------- COUNTDOWN ---------- */
   .countdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -500,12 +502,16 @@
   <div class="music-section">
     <span class="music-label">Nossa Música</span>
     <div class="music-player">
-      <button class="play-btn" onclick="openMusic()" aria-label="Tocar nossa música">
-        <svg width="13" height="15" viewBox="0 0 14 16" fill="white" aria-hidden="true"><path d="M0 0 L14 8 L0 16 Z"/></svg>
+      <button class="play-btn" id="music-btn" onclick="toggleMusic()" aria-label="Tocar ou pausar a música">
+        <svg id="icon-play" width="13" height="15" viewBox="0 0 14 16" fill="white" aria-hidden="true"><path d="M0 0 L14 8 L0 16 Z"/></svg>
+        <svg id="icon-pause" width="12" height="14" viewBox="0 0 12 14" fill="white" aria-hidden="true" hidden><rect x="0" y="0" width="4" height="14" rx="1"/><rect x="8" y="0" width="4" height="14" rx="1"/></svg>
       </button>
-      <span class="music-title">Toque para ouvir</span>
+      <span class="music-title" id="music-title">Toque para ouvir</span>
     </div>
   </div>
+
+  <!-- tocador em segundo plano -->
+  <div id="bg-player" aria-hidden="true"></div>
 
   <!-- NOSSA HISTÓRIA -->
   <section>
@@ -617,17 +623,11 @@
           <span class="dress-item-desc">Social completo<br>ou esporte fino</span>
         </div>
       </div>
-      <div class="palette" aria-hidden="true">
-        <span class="swatch" style="background:#5f4b9b"></span>
-        <span class="swatch" style="background:#8a889d"></span>
-        <span class="swatch" style="background:#b9aed6"></span>
-        <span class="swatch" style="background:#d9d1e8"></span>
-        <span class="swatch" style="background:#7d9a6b"></span>
-      </div>
       <span class="dress-note">
         <strong style="font-weight:600;color:var(--text-mid)">Traje: esporte fino / social</strong><br>
-        Tons de lavanda, lilás e verde-oliva combinam com a nossa paleta<br>
-        Por gentileza, evite o branco — reservado à noiva
+        Pedimos carinhosamente que o branco, off-white, marfim e tons muito
+        próximos ao branco sejam reservados para a noiva, e lavanda para as
+        madrinhas.
       </span>
     </div>
   </section>
@@ -710,16 +710,6 @@
   </footer>
 </div>
 
-<!-- MODAL MÚSICA -->
-<div class="music-modal-overlay" id="music-modal" onclick="closeMusicOutside(event)">
-  <div class="music-modal">
-    <button class="music-modal-close" onclick="closeMusic()" aria-label="Fechar">✕</button>
-    <h3>Nossa Música</h3>
-    <p>A música do nosso casamento</p>
-    <iframe id="yt-player" width="100%" height="200" src="" title="Nossa música" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  </div>
-</div>
-
 <script>
   /* Pétalas de lavanda sobre a foto */
   (function () {
@@ -778,15 +768,63 @@
     }
   }
 
-  function openMusic() {
-    document.getElementById('yt-player').src = 'https://www.youtube.com/embed/cZag0E32is0?autoplay=1';
-    document.getElementById('music-modal').classList.add('open');
+  /* ---- Nossa música: começa sozinha ao abrir o convite ---- */
+  var MUSIC_ID = 'cZag0E32is0';
+  var ytPlayer = null, musicPlaying = false;
+
+  (function loadYT() {
+    var tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+  })();
+
+  function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('bg-player', {
+      height: '1', width: '1', videoId: MUSIC_ID,
+      playerVars: { autoplay: 1, playsinline: 1, controls: 0, rel: 0, loop: 1, playlist: MUSIC_ID },
+      events: {
+        onReady: function (e) {
+          try { e.target.unMute(); e.target.setVolume(70); e.target.playVideo(); } catch (err) {}
+          setTimeout(checkAutoplay, 1500);
+        },
+        onStateChange: function (e) {
+          musicPlaying = (e.data === YT.PlayerState.PLAYING);
+          updateMusicUI();
+        }
+      }
+    });
   }
-  function closeMusic() {
-    document.getElementById('yt-player').src = '';
-    document.getElementById('music-modal').classList.remove('open');
+
+  /* Navegador bloqueou o som? Toca no mudo e liga o som no primeiro toque. */
+  function checkAutoplay() {
+    if (musicPlaying && !ytPlayer.isMuted()) return;
+    try { ytPlayer.mute(); ytPlayer.playVideo(); } catch (err) {}
+    var events = ['pointerdown', 'touchend', 'click', 'keydown'];
+    function turnOn() {
+      try { ytPlayer.unMute(); ytPlayer.setVolume(70); ytPlayer.playVideo(); } catch (err) {}
+      events.forEach(function (ev) { document.removeEventListener(ev, turnOn); });
+      setTimeout(updateMusicUI, 300);
+    }
+    events.forEach(function (ev) { document.addEventListener(ev, turnOn, { passive: true }); });
   }
-  function closeMusicOutside(e) { if (e.target === document.getElementById('music-modal')) closeMusic(); }
+
+  function toggleMusic() {
+    if (!ytPlayer) return;
+    if (musicPlaying && !ytPlayer.isMuted()) { ytPlayer.pauseVideo(); }
+    else { ytPlayer.unMute(); ytPlayer.setVolume(70); ytPlayer.playVideo(); }
+    setTimeout(updateMusicUI, 300);
+  }
+
+  function updateMusicUI() {
+    var tocando = musicPlaying && ytPlayer && !ytPlayer.isMuted();
+    var play = document.getElementById('icon-play');
+    var pause = document.getElementById('icon-pause');
+    var title = document.getElementById('music-title');
+    if (!play || !pause || !title) return;
+    play.hidden = tocando;
+    pause.hidden = !tocando;
+    title.textContent = tocando ? 'Tocando agora' : 'Toque para ouvir';
+  }
 </script>
 </body>
 </html>
